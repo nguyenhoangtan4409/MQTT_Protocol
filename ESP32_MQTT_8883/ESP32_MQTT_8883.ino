@@ -12,8 +12,8 @@
 
   const char *MQTT_HOST = "broker.emqx.io";
   const int MQTT_PORT = 8883;
-  const char *MQTT_USER = "TanTan"; // leave blank if no credentials used
-  const char *MQTT_PASS = "12345567899"; // leave blank if no credentials used
+  const char *MQTT_USER = "TanTan"; // có thể để trống nếu không yêu cầu xác thực
+  const char *MQTT_PASS = "12345567899"; 
   const char MQTT_SUB_TOPIC[] = "home/MQTTLab4/in";
   const char MQTT_PUB_TOPIC[] = "home/MQTTLab4/out";
   
@@ -63,8 +63,8 @@ void setup_wifi()
   WiFi.begin(ssid, pass);
   while (WiFi.status() != WL_CONNECTED)
   {
+    delay(500);
     Serial.print(".");
-    delay(1000);
   }
   Serial.println("");
   Serial.println("WiFi connected");

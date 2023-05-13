@@ -5,21 +5,23 @@
 const char* ssid = "TanTanLap";
 const char* pass = "12345567899";
 
-#define HOSTNAME "MQTTLab4"
+#define HOSTNAME "mqttx_MQTTLab4"
 
 const char *MQTT_HOST = "broker.emqx.io";
 const int MQTT_PORT = 1883;
-const char *MQTT_USER = "TanTan"; // leave blank if no credentials used
-const char *MQTT_PASS = "12345567899"; // leave blank if no credentials used
+const char *MQTT_USER = "TanTan"; // có thể để trống nếu không yêu cầu xác thực
+const char *MQTT_PASS = "12345567899"; 
 const char MQTT_SUB_TOPIC[] = "home/MQTTLab4/in";
 const char MQTT_PUB_TOPIC[] = "home/MQTTLab4/out";
+
+WiFiClient wifiClient;
+PubSubClient client(wifiClient);
 
 #define LED_PIN  2
 int current_ledState = LOW;
 int last_ledState = LOW;
 
-WiFiClient wifiClient;
-PubSubClient client(wifiClient);
+
 
 void setup_wifi() {
   Serial.print("Attempting to connect to SSID: ");
@@ -69,7 +71,6 @@ float Temp = 0;
 
 void setup() {
   Serial.begin(115200);
-  Serial.setTimeout(500);
 
   setup_wifi();
 
