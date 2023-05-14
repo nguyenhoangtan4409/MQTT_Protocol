@@ -23,7 +23,7 @@
 #SOFTWARE.
 
 import binascii
-filename = 'howsmysslBase64.cer'
+filename = 'broker.emqx.io-ca.cer'
 with open(filename, 'rb') as f:
     content = f.read()
 

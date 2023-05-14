@@ -21,9 +21,11 @@ PubSubClient client(wifiClient);
 int current_ledState = LOW;
 int last_ledState = LOW;
 
+unsigned long lastSendTime = 0;
+float Temp = 0;
 
-
-void setup_wifi() {
+void setup_wifi() 
+{
   Serial.print("Attempting to connect to SSID: ");
   Serial.println(ssid);
   WiFi.setHostname(HOSTNAME);
@@ -56,7 +58,8 @@ void connect_to_broker()
   }
 }
 
-void callback(char* topic, byte *payload, unsigned int length) {
+void callback(char* topic, byte *payload, unsigned int length) 
+{
   Serial.print("Received [");
   Serial.print(topic);
   Serial.print("]: ");
@@ -67,9 +70,10 @@ void callback(char* topic, byte *payload, unsigned int length) {
   if (*payload == '0') current_ledState = LOW;
 }
 
-float Temp = 0;
 
-void setup() {
+
+void setup() 
+{
   Serial.begin(115200);
 
   setup_wifi();
@@ -84,7 +88,8 @@ void setup() {
   read_Compensation_parameter_storage();
 }
 
-void send_data() {
+void send_data() 
+{
   float Temp = readTemperaturee();
   Serial.printf("Nhiệt độ: %0.2f doC\n",Temp);
   char TempStr[10];
@@ -92,14 +97,33 @@ void send_data() {
   client.publish(MQTT_PUB_TOPIC, TempStr); 
   delay(500);
 }
-unsigned long lastSendTime = 0;
-void loop() {
-  if (!client.connected()) {
-    connect_to_broker();
+
+void loop() 
+{
+  if (WiFi.status() != WL_CONNECTED)
+  {
+    Serial.print("Checking wifi");
+    while (WiFi.waitForConnectResult() != WL_CONNECTED)
+    {
+      WiFi.begin(ssid, pass);
+      Serial.print(".");
+      delay(10);
+    }
+    Serial.println("connected");
   }
-  client.loop();
-  
-  if (last_ledState != current_ledState) {
+  else
+  {
+    if (!client.connected())
+    {
+      connect_to_broker();
+    }
+    else
+    {
+      client.loop();
+    }
+  }
+  if (last_ledState != current_ledState)
+  {
     last_ledState = current_ledState;
     digitalWrite(LED_PIN, current_ledState);
     Serial.printf("Trạng thái LED %d\n",current_ledState);
