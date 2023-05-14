@@ -111,9 +111,10 @@ void setup()
   setup_wifi();
 
   Serial.print("Setting time using SNTP");
-  configTime(-5 * 3600, 0, "pool.ntp.org", "time.nist.gov");
+  configTime(7 * 3600, 0, "0.vn.pool.ntp.org", "1.vn.pool.ntp.org");
+
   now = time(nullptr);
-  while (now < 1510592825) {
+  while (now < 1684036922) {
     delay(500);
     Serial.print(".");
     now = time(nullptr);
